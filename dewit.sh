@@ -2,4 +2,4 @@
 
 set +eux
 
-meson --cross-file cross_compile.txt build
+meson --cross-file stm32f429_cross_file.txt build

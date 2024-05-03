@@ -1,6 +1,8 @@
+#include "bool.h"
+
 int main(void)
 {
-    while(1);
+    while(TRUE);
 
     return 0;
 }

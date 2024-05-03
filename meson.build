@@ -1,50 +1,61 @@
-project('cross-compile-tutorial', 'c',
-  default_options : ['c_std=c11', 'cpp_std=c++11'])
+project('stm32 template',
+  ['c'],
+  meson_version: '>=0.53.0',
+  default_options : ['warning_level=1', 'c_std=c11'])
 
-srcs = ['src/main.c']
-
-cc = meson.get_compiler('c')
+arm_cc = meson.get_compiler('c', native: false)
 
 comp_flags = [
   '-falign-functions=16',
   '-fmerge-all-constants',
-  '-mcpu=cortex-m4',
   '-ffunction-sections',
   '-fdata-sections',
   '-fno-common',
+  '-mcpu=cortex-m4',
   '-mfloat-abi=hard',
   '-mfpu=fpv4-sp-d16',
-  '-Wall',
-  '-Wextra',
   '-Werror',
   '-Warray-bounds',
   '-mthumb',
+  '-nostartfiles',
   '-fstack-protector-strong'
 ]
 
-if not cc.has_multi_arguments(comp_flags)
-  error('unsupported compiler args')
-else
-  add_project_arguments(comp_flags, native: false, language: 'c')
-endif
+# source files
+srclist = []
+subdir('src')
 
+# include files
+incs = include_directories('inc')
+
+# startup file
+subdir('startup')
+
+linker_script_flags = []
+linker_script_deps = []
+
+# linker file
+subdir('linker')
+
+# Linker options
 link_flags = [
+  '-nostdlib',
   '-specs=nosys.specs',
   '-mcpu=cortex-m4',
   '-fno-common',
   '-mfloat-abi=hard',
   '-mfpu=fpv4-sp-d16',
   '-mthumb',
-  '-Wl,--gc-sections',
-  '-Wl,--defsym=__process_stack_size__=0x1000',
-  '-Wl,--defsym=__main_stack_size__=0x400',
-  #'-T'
+  '-Wl,--gc-sections'
 ]
 
-if not cc.has_multi_link_arguments(link_flags)
-  error('unsupported linker flags')
-else
-  add_project_link_arguments(link_flags, native: false, language: 'c')
-endif
-
-executable('demo_arm.elf', srcs)
+executable('demo_arm.elf', srclist,
+  include_directories: incs,
+  c_args: comp_flags,
+  link_args: [
+    link_flags,
+    linker_script_flags
+  ],
+  link_depends: linker_script_deps,
+  link_language: 'c',
+  native: false)
