@@ -1,7 +1,7 @@
-project('stm32 template',
+project('stm32_template',
   ['c'],
   meson_version: '>=0.53.0',
-  default_options : ['warning_level=1', 'c_std=c11'])
+  default_options : ['warning_level=2', 'c_std=c11'])
 
 arm_cc = meson.get_compiler('c', native: false)
 
@@ -17,7 +17,7 @@ comp_flags = [
   '-Werror',
   '-Warray-bounds',
   '-mthumb',
-  '-nostartfiles',
+  '-masm-syntax-unified',
   '-fstack-protector-strong'
 ]
 
@@ -49,7 +49,11 @@ link_flags = [
   '-Wl,--gc-sections'
 ]
 
-executable('demo_arm.elf', srclist,
+target_suffix = '.elf'
+
+# Release target
+build_target(meson.project_name() + '_rls' + target_suffix,
+  srclist,
   include_directories: incs,
   c_args: comp_flags,
   link_args: [
@@ -58,4 +62,24 @@ executable('demo_arm.elf', srclist,
   ],
   link_depends: linker_script_deps,
   link_language: 'c',
-  native: false)
+  override_options: [
+    'optimization=s',
+    'debug=false'
+  ],
+target_type: 'executable')
+
+# Debug target
+build_target(meson.project_name() + '_dbg' + target_suffix,
+  srclist,
+  include_directories: incs,
+  c_args: comp_flags,
+  link_args: [
+    link_flags,
+    linker_script_flags
+  ],
+  link_depends: linker_script_deps,
+  link_language: 'c',
+  override_options: [
+    'buildtype=debug'
+  ],
+target_type: 'executable')
