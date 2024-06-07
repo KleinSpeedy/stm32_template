@@ -6,11 +6,6 @@ project('stm32_template',
 arm_cc = meson.get_compiler('c', native: false)
 
 comp_flags = [
-  '-falign-functions=16',
-  '-fmerge-all-constants',
-  '-ffunction-sections',
-  '-fdata-sections',
-  '-fno-common',
   '-mcpu=cortex-m4',
   '-mfloat-abi=hard',
   '-mfpu=fpv4-sp-d16',
@@ -18,7 +13,11 @@ comp_flags = [
   '-Warray-bounds',
   '-mthumb',
   '-masm-syntax-unified',
-  '-fstack-protector-strong'
+  '-falign-functions=16',
+  '-fmerge-all-constants',
+  '-ffunction-sections',
+  '-fdata-sections',
+  '-fno-common'
 ]
 
 # source files
@@ -39,8 +38,8 @@ subdir('linker')
 
 # Linker options
 link_flags = [
-  '-nostdlib',
-  '-specs=nosys.specs',
+  '-nostartfiles',
+  '--specs=nosys.specs',
   '-mcpu=cortex-m4',
   '-fno-common',
   '-mfloat-abi=hard',
@@ -48,6 +47,9 @@ link_flags = [
   '-mthumb',
   '-Wl,--gc-sections'
 ]
+
+# Configure external dependencies
+subdir('ext')
 
 target_suffix = '.elf'
 
