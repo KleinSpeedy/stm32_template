@@ -8,4 +8,5 @@ endif
 startup_file_asm = plat + '.S'
 
 srclist += files(startup_file_asm)
+srclist += files('vectors.S')
 srclist += files('crt1.c')

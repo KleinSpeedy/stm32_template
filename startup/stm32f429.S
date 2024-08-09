@@ -20,7 +20,7 @@
 .word __stack_end
 .word Reset_Handler
 
-.text
+.section .text.Reset_Handler
 .type Reset_Handler, %function
 .global Reset_Handler
 Reset_Handler:
@@ -31,6 +31,8 @@ Reset_Handler:
     /* set stack pointer */
     ldr sp, =__stack_end
 
+    /* Initialize core system modules */
+
     /* activate unpriviliged mode for FPU  */
     ldr r0, =CPACR_ADDR
     ldr r1, [r0]
@@ -38,6 +40,9 @@ Reset_Handler:
     str r1, [r0]
     dsb
     isb // reset pipeline now that FPU is enabled
+
+    /* RCC is not configured */
+    /* Vector table isnt placed in SRAM, offset is 0 */
 
     /* Fill stack with pattern */
     ldr r0, =STACK_FILL_PATTERN
@@ -71,3 +76,5 @@ bssfloop:
 
     /* Default exit handler */
     b __exit
+
+.size Reset_Handler, .-Reset_Handler
