@@ -29,4 +29,5 @@ fi
 $QEMU -nodefaults -nographic \
     -serial mon:stdio \
     -s -S \
+    -d trace:stm32f429_gpio_read,trace:stm32f429_gpio_write \
     -M stm32f429-thesis-device -kernel $FIRMWARE
