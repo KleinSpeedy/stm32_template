@@ -10,13 +10,6 @@ incs += cmsis_core_incs
 incs += cmsis_device_incs
 incs += hal_incs
 
-# Source configuration
-
-stm32_cube_dir = meson.current_source_dir() / 'STM32CubeF4'
-
-hal_srcs_dir = stm32_cube_dir / 'Drivers/STM32F4xx_HAL_Driver/Src/'
-cmsis_srcs_dir = stm32_cube_dir / 'Drivers/CMSIS/'
-
 # CMSIS sources
 cmsis_srcs = [
   './STM32CubeF4/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c'

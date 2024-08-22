@@ -1,5 +1,4 @@
 #include "bool.h"
-#include "stm32f429xx.h"
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 
@@ -23,8 +22,7 @@ int main(void)
     while(TRUE)
     {
         HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
-        // Delay 1s
-        HAL_Delay(1000);
+        HAL_Delay(10000);
     }
 
     return 0;

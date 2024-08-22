@@ -10,12 +10,8 @@ comp_flags = [
   '-Werror',
   '-Warray-bounds',
   '-mthumb',
-  #'-masm-syntax-unified',
-  '-falign-functions=16',
-  '-fmerge-all-constants',
-  '-ffunction-sections',
-  '-fdata-sections',
-  '-fno-common'
+  '-fno-common',
+  '-fno-lto'
 ]
 
 # source files
@@ -39,12 +35,13 @@ subdir('linker')
 link_flags = [
   '-nostartfiles',
   '--specs=nosys.specs',
-  '-mcpu=cortex-m4',
   '-fno-common',
+  '-mcpu=cortex-m4',
   '-mfloat-abi=hard',
   '-mfpu=fpv4-sp-d16',
   '-mthumb',
-  '-Wl,--gc-sections'
+  '-Wl,--gc-sections',
+  '-Wl,-Map=output.map'
 ]
 
 # Compiler definitions

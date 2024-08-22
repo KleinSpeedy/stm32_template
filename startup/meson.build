@@ -9,4 +9,3 @@ startup_file_asm = plat + '.S'
 
 srclist += files(startup_file_asm)
 srclist += files('system_handlers.c')
-srclist += files('vectors.S')

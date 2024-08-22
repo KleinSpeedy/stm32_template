@@ -19,3 +19,8 @@ set print vtbl on
 set print demangle on
 set demangle-style gnu-v3
 set print sevenbit-strings off
+
+# print vector table
+define print_vector_table
+    x/64x 0x08000000
+end
