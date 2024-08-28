@@ -1,7 +1,7 @@
 project('stm32_template',
-  ['c'],
+  ['c', 'cpp'],
   meson_version: '>=0.53.0',
-  default_options : ['warning_level=2', 'c_std=c11'])
+  default_options : ['warning_level=2', 'c_std=c11', 'cpp_std=c++11'])
 
 comp_flags = [
   '-mcpu=cortex-m4',
@@ -21,6 +21,7 @@ subdir('src')
 # include files, use array
 incs = []
 incs += include_directories('inc')
+incs += include_directories('/opt/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi/include')
 
 # startup file
 subdir('startup')
@@ -35,6 +36,7 @@ subdir('linker')
 link_flags = [
   '-nostartfiles',
   '--specs=nosys.specs',
+  '--specs=nano.specs',
   '-fno-common',
   '-mcpu=cortex-m4',
   '-mfloat-abi=hard',

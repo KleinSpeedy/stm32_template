@@ -1,5 +1,6 @@
 [properties]
 platform = 'stm32f429'
+sys_root = '/opt/gcc-arm-none-eabi-6-2017-q2-update/arm-none-eabi'
 
 [binaries]
 c = 'arm-none-eabi-gcc'
@@ -9,7 +10,7 @@ strip = 'arm-none-eabi-strip'
 ld = 'arm-none-eabi-ld'
 
 [host_machine]
-system = ''
+system = 'baremetal'
 cpu_family = 'arm'
 cpu = 'cortex-m4'
 endian = 'little'

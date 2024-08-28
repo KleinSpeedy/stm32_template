@@ -40,6 +40,14 @@ void Error_Handler(ErrorReason reason)
     }
 }
 
+/*
+ * Provide stub _init function
+ */
+__attribute__((weak))
+void _init(void)
+{
+}
+
 /******************************************************************************/
 /*            Cortex-M4 Processor Exceptions Handlers                         */
 /******************************************************************************/

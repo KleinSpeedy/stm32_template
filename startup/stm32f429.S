@@ -88,7 +88,7 @@ BssZeroLoop:
     bl SystemInit
 
     /* Normally, we call static constructors */
-    /*bl __libc_init_array*/
+    bl __libc_init_array
 
     /* Main function call */
     bl main
