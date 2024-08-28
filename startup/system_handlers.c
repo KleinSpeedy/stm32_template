@@ -14,6 +14,7 @@
  */
 
 #include "system_handlers.h"
+#include "error_handler.h"
 #include "stm32f4xx_hal.h"
 
 /*
@@ -22,6 +23,18 @@
 __attribute__((noreturn))
 void __exit(void)
 {
+    while(1)
+    {
+    }
+}
+
+/*
+ * Default error handler with ErrorReason for debugging
+ */
+__attribute__((noreturn))
+void Error_Handler(ErrorReason reason)
+{
+    (void)reason;
     while(1)
     {
     }
