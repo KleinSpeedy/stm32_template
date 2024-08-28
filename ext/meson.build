@@ -10,13 +10,6 @@ incs += cmsis_core_incs
 incs += cmsis_device_incs
 incs += hal_incs
 
-# CMSIS sources
-cmsis_srcs = [
-  './STM32CubeF4/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c'
-]
-
-stm32_cube_srcs += files(cmsis_srcs)
-
 # HAL sources
 stm32_hal_srcs = [
   #'STM32CubeF4/Drivers/STM32F4xx_HAL_Driver/Src/Legacy/stm32f4xx_hal_can.c',

@@ -7,8 +7,10 @@
 
 typedef enum ErrorReason {
     ERROR_NONE = 0,
+    ERROR_SYS_CLOCK_INIT,
     ERROR_GPIO_INIT,
     ERROR_UART_INIT,
+    ERROR_GPIO_LOCK,
 
     NUM_ERRORS
 }ErrorReason;

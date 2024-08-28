@@ -31,25 +31,6 @@
 .type Reset_Handler, %function
 Reset_Handler:
 
-    /* Mask interrupts initially */
-    cpsid   i
-
-    /* set stack pointer */
-    ldr sp, =_stack_end
-
-    /* Initialize core system modules */
-
-    /* activate unpriviliged mode for FPU  */
-    ldr r0, =CPACR_ADDR
-    ldr r1, [r0]
-    orr r1, r1, #(CPACR_SET_CP10 | CPACR_SET_CP11)
-    str r1, [r0]
-    dsb
-    isb // reset pipeline now that FPU is enabled
-
-    /* RCC is not configured */
-    /* Vector table isnt placed in SRAM, offset is 0 */
-
 /* Copy data segment initializers from flash to SRAM */
     ldr r0, =_data_begin
     ldr r1, =_data_end

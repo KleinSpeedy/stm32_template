@@ -9,3 +9,6 @@ startup_file_asm = plat + '.S'
 
 srclist += files(startup_file_asm)
 srclist += files('system_handlers.c')
+srclist += files('system_stm32f4xx.c')
+srclist += files('syscalls.c')
+srclist += files('sysmem.c')
