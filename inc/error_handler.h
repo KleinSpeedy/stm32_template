@@ -11,6 +11,7 @@ typedef enum ErrorReason {
     ERROR_GPIO_INIT,
     ERROR_UART_INIT,
     ERROR_GPIO_LOCK,
+    ERROR_UART_SEND,
 
     NUM_ERRORS
 }ErrorReason;
