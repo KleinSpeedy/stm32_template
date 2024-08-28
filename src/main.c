@@ -12,25 +12,56 @@ int main(void)
     /* Configure the system clock to 180 MHz */
     SystemClock_Config();
 
-    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOD_CLK_ENABLE();
+    __HAL_RCC_USART3_CLK_ENABLE();
 
-    GPIO_InitTypeDef gpio_init;
-    gpio_init.Mode  = GPIO_MODE_OUTPUT_PP;
-    gpio_init.Pull  = GPIO_PULLUP;
-    gpio_init.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitTypeDef  GPIO_InitStruct;
 
-    gpio_init.Pin = GPIO_PIN_0;
-    HAL_GPIO_Init(GPIOB, &gpio_init);
-    gpio_init.Pin = GPIO_PIN_7;
-    HAL_GPIO_Init(GPIOB, &gpio_init);
+    GPIO_InitStruct.Pin       = GPIO_PIN_8;
+    GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull      = GPIO_PULLUP;
+    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
+    UART_InitTypeDef uart_init = {
+        .BaudRate = 9600,
+        .WordLength = UART_WORDLENGTH_8B,
+        .StopBits = UART_STOPBITS_1,
+        .Parity = UART_PARITY_NONE,
+        .HwFlowCtl = UART_HWCONTROL_NONE,
+        .Mode = UART_MODE_TX,
+        .OverSampling = UART_OVERSAMPLING_16
+    };
+
+    UART_HandleTypeDef uart_handle = {
+        .Instance = USART3,
+        .Init = uart_init,
+    };
+
+    if(HAL_UART_Init(&uart_handle) != HAL_OK)
+    {
+        Error_Handler(ERROR_UART_INIT);
+    }
+
+    if(HAL_GPIO_LockPin(GPIOD, GPIO_PIN_8) != HAL_OK)
+    {
+        Error_Handler(ERROR_GPIO_LOCK);
+    }
+
+    const uint8_t tx_buffer[] = {'D','E','A','D','B','E','E','F','\r','\n'};
+
+    HAL_StatusTypeDef status;
     while(TRUE)
     {
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-        HAL_Delay(1000);
-        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+        status = HAL_UART_Transmit(&uart_handle, tx_buffer, sizeof(tx_buffer), 1000);
+        if(status != HAL_OK)
+        {
+            Error_Handler(ERROR_UART_SEND);
+        }
         HAL_Delay(1000);
     }
+
     return 0;
 }
 
@@ -79,15 +110,15 @@ static void SystemClock_Config(void)
   if(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     /* Initialization Error */
-      Error_Handler(ERROR_SYS_CLOCK_INIT);
+    //  Error_Handler(ERROR_SYS_CLOCK_INIT);
   }
-  
+
   if(HAL_PWREx_EnableOverDrive() != HAL_OK)
   {
     /* Initialization Error */
-      Error_Handler(ERROR_SYS_CLOCK_INIT);
+    //  Error_Handler(ERROR_SYS_CLOCK_INIT);
   }
-  
+
   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 
      clocks dividers */
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
@@ -98,6 +129,6 @@ static void SystemClock_Config(void)
   if(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     /* Initialization Error */
-      Error_Handler(ERROR_SYS_CLOCK_INIT);
+    //  Error_Handler(ERROR_SYS_CLOCK_INIT);
   }
 }
